@@ -391,6 +391,8 @@ public class AcceptCollectionitemAndEditActivity extends BaseActivity {
                 //获取内容
                 context = document.getElementsByTag("meta").select("[name=description]").attr("content");
 
+                Log.d("ffff", "run: " + uri);
+
                 //微信公众号
                 if (uri.indexOf("weixin.qq.com") != -1){
                     images = document.getElementsByTag("img");
@@ -531,6 +533,29 @@ public class AcceptCollectionitemAndEditActivity extends BaseActivity {
                             Log.d(TAG, "run: " + str);
                             single = str;
                             context = context.replace(title, "");
+                            break;
+                        }
+                    }
+                }
+
+                //A站2
+                else if(uri.indexOf("http://m.acfun.cn/v/") == 0 || uri.indexOf("m.acfun.cn/v/") == 0){
+                    Log.d("ff", "run: " + uri.substring(uri.indexOf("/v/?ac=") + 7, uri.length()));
+                    uri = "http://www.acfun.cn/a/ac" + uri.substring(uri.indexOf("/v/?ac=") + 7, uri.length());
+                    Log.d("fff", "run: " + uri);
+                    document = Jsoup.connect(uri).timeout(10000).get();
+                    images = document.getElementsByTag("img");
+                    for (Element element : images){
+                        Log.d(TAG, "run: " + element.toString());
+                        String str = element.attr("src");
+                        if (str.indexOf("http://cdn.aixifan.com") != 0){
+                            Log.d(TAG, "run: " + str);
+                            single = str;
+                            //获取标题
+                            title = document.getElementsByTag("title").text();
+
+                            //获取内容
+                            context = document.getElementsByTag("meta").select("[name=description]").attr("content");
                             break;
                         }
                     }

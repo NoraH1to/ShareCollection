@@ -53,6 +53,7 @@ import com.tencent.smtt.sdk.WebView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.litepal.LitePal;
 
@@ -967,6 +968,38 @@ public class MainActivity extends BaseActivity
             //一加社区
             else if (uri.indexOf("http://www.oneplusbbs.com/thread") == 0 || uri.indexOf("www.oneplusbbs.com/thread") == 0){
                 single = document.getElementsByTag("ignore_js_op").first().select("img").attr("zoomfile");
+            }
+
+            //A站
+            else if (uri.indexOf("http://www.acfun.cn/a/") == 0 || uri.indexOf("www.acfun.cn/a/") == 0){
+                images = document.getElementsByTag("img");
+                for (Element element : images){
+                    Log.d(TAG, "run: " + element.toString());
+                    String str = element.attr("src");
+                    if (str.indexOf("http://cdn.aixifan.com") != 0){
+                        Log.d(TAG, "run: " + str);
+                        single = str;
+                        break;
+                    }
+                }
+            }
+
+            //A站2
+            else if(uri.indexOf("http://m.acfun.cn/v/") == 0 || uri.indexOf("m.acfun.cn/v/") == 0){
+                Log.d("ff", "run: " + uri.substring(uri.indexOf("/v/?ac=") + 7, uri.length()));
+                uri = "http://www.acfun.cn/a/ac" + uri.substring(uri.indexOf("/v/?ac=") + 7, uri.length());
+                Log.d("fff", "run: " + uri);
+                document = Jsoup.connect(uri).timeout(10000).get();
+                images = document.getElementsByTag("img");
+                for (Element element : images){
+                    Log.d(TAG, "run: " + element.toString());
+                    String str = element.attr("src");
+                    if (str.indexOf("http://cdn.aixifan.com") != 0){
+                        Log.d(TAG, "run: " + str);
+                        single = str;
+                        break;
+                    }
+                }
             }
 
             //默认情况
