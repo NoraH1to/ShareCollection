@@ -5,52 +5,41 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface.OnClickListener;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.util.ArrayMap;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.litepal.LitePal;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
@@ -70,7 +59,7 @@ public class CollectionItemListActivity extends BaseActivity {
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private TextView mcontext;
-    private SwipeMenuRecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private FloatingActionButton fab;
 
     private List<String> categoryName = new ArrayList<>();
@@ -245,7 +234,7 @@ public class CollectionItemListActivity extends BaseActivity {
 
         Glide.with(this)
                 .load(category.getIcon())
-                .bitmapTransform(new BlurTransformation(this))
+                .apply(RequestOptions.bitmapTransform(new BlurTransformation(10, 25)))
                 .into(imageView);
 
         //根据主题设置样式
@@ -263,14 +252,12 @@ public class CollectionItemListActivity extends BaseActivity {
         }
 
         //初始化列表
-        recyclerView = (SwipeMenuRecyclerView) findViewById(R.id.recy_collectionlist);
+        recyclerView = (RecyclerView) findViewById(R.id.recy_collectionlist);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.useDefaultLoadMore();
         recyclerView.setAdapter(adapter);
-        recyclerView.setItemViewSwipeEnabled(false);
 
 
         //初始化fab，设置点击监听

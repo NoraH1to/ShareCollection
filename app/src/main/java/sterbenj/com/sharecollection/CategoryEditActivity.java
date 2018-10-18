@@ -4,13 +4,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.quicksettings.Tile;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputEditText;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 /**
  * XJB Created by 野良人 on 2018/5/26.

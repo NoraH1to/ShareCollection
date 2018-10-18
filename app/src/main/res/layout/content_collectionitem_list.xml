@@ -9,11 +9,11 @@
     tools:context=".CollectionItemListActivity"
     tools:showIn="@layout/app_bar_collectionitem_list">
 
-    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recy_collectionlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
-    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

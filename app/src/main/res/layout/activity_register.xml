@@ -7,7 +7,7 @@
         tools:context=".RegisterActivity"
         android:fitsSystemWindows="true">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/reg_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
             android:layout_centerInParent="true"
             android:layout_above="@id/reg_account_layout"/>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/reg_account_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,15 +27,15 @@
             android:layout_marginHorizontal="16dp"
             android:layout_above="@id/reg_password_layout">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/reg_account_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="账号（6-12位）"
                 android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/reg_password_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,16 +44,16 @@
             android:layout_marginHorizontal="16dp"
             android:layout_centerInParent="true">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/reg_password_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="密码（8-16位）"
                 android:inputType="textPassword"
                 android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/reg_password_again_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,16 +63,16 @@
             android:layout_centerInParent="true"
             android:layout_below="@id/reg_password_layout">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/reg_password_again_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="确认密码"
                 android:inputType="textPassword"
                 android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/reg_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             android:background="@android:color/transparent"
             android:text="返回" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/reg_regButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

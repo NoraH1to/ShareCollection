@@ -1,23 +1,21 @@
 package sterbenj.com.sharecollection;
 
-import android.support.v7.app.AlertDialog;
-import android.content.Context;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ContentLoadingProgressBar;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.Menu;
@@ -25,13 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -116,14 +112,16 @@ public class AcceptCollectionitemAndEditActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch(msg.what){
                 case SET_IMAGE:
-                    Glide.with(getApplicationContext()).load(mImageUri).error(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_close_black_24dp)).into(appCompatImageView);
+                    Glide.with(getApplicationContext()).load(mImageUri).apply(
+                            new RequestOptions().error(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_close_black_24dp))).into(appCompatImageView);
                     Title.setText(title);
                     ContextEdit.setText(date + context);
                     progressBar.setVisibility(View.GONE);
                     hasFinishImage = true;
                     break;
                 case NO_IMAGE:
-                    Glide.with(getApplicationContext()).load(mImageUri).error(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_close_black_24dp)).into(appCompatImageView);
+                    Glide.with(getApplicationContext()).load(mImageUri).apply(
+                        new RequestOptions().error(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_close_black_24dp))).into(appCompatImageView);
                     Title.setText(title);
                     ContextEdit.setText(date + context);
                     progressBar.setVisibility(View.GONE);
