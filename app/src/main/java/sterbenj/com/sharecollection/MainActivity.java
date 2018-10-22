@@ -32,7 +32,6 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.material.navigation.NavigationView;
-import com.tencent.smtt.sdk.QbSdk;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -136,8 +135,6 @@ public class MainActivity extends BaseActivity
         instance = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        QbSdk.initX5Environment(getApplicationContext(), null);
 
         if(LitePal.where("PackageName = ?", "全部收藏").find(Category.class).size() == 0){
             Category category = new Category("全部收藏", tools.DrawableToByteArray(ContextCompat.getDrawable(this, R.drawable.ic_folder_black_24dp)), "全部收藏", "全部收藏");
@@ -293,10 +290,42 @@ public class MainActivity extends BaseActivity
 
         switch (id){
             case R.id.main_menu_upload:
-                upload();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setMessage("上传会覆盖云端内容，确定上传到云端？");
+                dialog.setCancelable(true);
+                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        upload();
+                    }
+                });
+                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                dialog.show();
+
                 break;
             case R.id.main_menu_download:
-                download();
+                AlertDialog.Builder dialog1 = new AlertDialog.Builder(MainActivity.this);
+                dialog1.setMessage("下载会覆盖本地内容，确定下载到本地？");
+                dialog1.setCancelable(true);
+                dialog1.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        download();
+                    }
+                });
+                dialog1.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                dialog1.show();
+
                 break;
             case R.id.main_menu_getImage:
                 getAllImage();

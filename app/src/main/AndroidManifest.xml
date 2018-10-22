@@ -70,7 +70,9 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".WebActivity"></activity>
+        <activity android:name=".WebActivity"
+            android:theme="@style/white_transStat">
+        </activity>
     </application>
 
 </manifest>

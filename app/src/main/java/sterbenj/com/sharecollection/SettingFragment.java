@@ -62,15 +62,17 @@ public class SettingFragment extends PreferenceFragment {
                         //主题变更
                         if (value.equals("0")){
                             editor.putInt("themeID", R.style.white_transStat);
-                            editor.commit();
+                            editor.apply();
                             SettingActivity.IS_FIRST_CREATE = false;
-                            ActivityControl.recreateAll();
+                            getActivity().finish();
+                            MainActivity.instance.recreate();
                         }
                         if (value.equals("1")){
                             editor.putInt("themeID", R.style.Dark);
-                            editor.commit();
+                            editor.apply();
                             SettingActivity.IS_FIRST_CREATE = false;
-                            ActivityControl.recreateAll();
+                            getActivity().finish();
+                            MainActivity.instance.recreate();
                         }
 
                     }

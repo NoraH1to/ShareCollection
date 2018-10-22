@@ -6,17 +6,21 @@ import android.media.Image;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,9 +47,7 @@ public class CollectionItemListAdapter extends RecyclerView.Adapter<CollectionIt
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
-        ImageButton imageButton;
-        ImageButton imageButton2;
-        ImageButton offlineButton;
+        ImageButton more;
         TextView title;
         View line;
         TextView context;
@@ -53,13 +55,12 @@ public class CollectionItemListAdapter extends RecyclerView.Adapter<CollectionIt
         String ParentPackageName;
         CheckBox checkBox;
         AppCompatImageView appCompatImageView;
+        PopupMenu popupMenu;
 
         public ViewHolder(View itemView){
             super(itemView);
             cardView = (CardView)itemView.findViewById(R.id.card_view_collectionitemlist);
-            imageButton = (ImageButton) itemView.findViewById(R.id.card_view_collectionitemlist_jump);
-            imageButton2 = (ImageButton) itemView.findViewById(R.id.card_view_collectionitemlist_copy);
-            offlineButton = (ImageButton) itemView.findViewById(R.id.card_view_collecitonitemlist_offline);
+            more = (ImageButton) itemView.findViewById(R.id.card_view_collectionitemlist_more);
             title = (TextView)itemView.findViewById(R.id.collectionlistitem_title);
             line = (View)itemView.findViewById(R.id.collectionlistitem_line);
             context = (TextView)itemView.findViewById(R.id.collectionlistitem_context);
@@ -83,6 +84,11 @@ public class CollectionItemListAdapter extends RecyclerView.Adapter<CollectionIt
             ParentPackageName = collectionItem.getParentCategory();
             if (collectionItem.getImage() != null){
                 appCompatImageView.setImageDrawable(tools.ByteArrayToDrawable(collectionItem.getImage()));
+            }
+            if (CollectionItemListActivity.instance.actionMode != null){
+                this.more.setVisibility(View.GONE);
+            }else{
+                this.more.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -127,23 +133,6 @@ public class CollectionItemListAdapter extends RecyclerView.Adapter<CollectionIt
         Log.d("+++++++++CLAD", "onBindViewHolder: ");
         holder.setData(collectionItemList.get(position), position);
 
-        //跳转点击监听
-        holder.imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyJumpOutRoad.onCollectionItemClick(collectionItemList.get(position), position, v, mContext, holder.checkBox);
-            }
-        });
-
-        //复制点击监听
-        holder.imageButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyJumpOutRoad.CopyToShare(collectionItemList.get(position).getTitle()
-                + "\n" + collectionItemList.get(position).getmUri());
-            }
-        });
-
         //卡片点击跳转
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,14 +149,6 @@ public class CollectionItemListAdapter extends RecyclerView.Adapter<CollectionIt
             }
         });
 
-        //离线浏览按钮
-        holder.offlineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyJumpOutRoad.JumpOfflineWeb(holder.uri, position);
-            }
-        });
-
         //卡片长按多选删除
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -176,14 +157,21 @@ public class CollectionItemListAdapter extends RecyclerView.Adapter<CollectionIt
                 return true;
             }
         });
+
+        holder.more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyJumpOutRoad.OpenMenu(position, holder.more, collectionItemList.get(position).getTitle()
+                        + "\n" + collectionItemList.get(position).getmUri(), holder.uri, collectionItemList.get(position), holder.checkBox);
+            }
+        });
     }
 
     public interface JumpOutRoad{
         void JumpOut(Intent intent, int position);
-        void CopyToShare(String data);
-        void onCollectionItemClick(CollectionItem collectionItem,  int position, View v, Context mContext, CheckBox checkBox);
         void onCollectionitemLongClick(View v, int position);
         void JumpOfflineWeb(String uri, int position);
+        void OpenMenu(final int position, ImageView view, final String data, final String uri, final CollectionItem collectionItem, CheckBox checkBox);
     }
 
     public List<CollectionItem> getCollectionItemList(){

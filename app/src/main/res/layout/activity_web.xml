@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WebActivity"
-    android:fitsSystemWindows="true">
+    tools:context=".WebActivity">
+
 
     <WebView
         android:layout_width="match_parent"
@@ -15,4 +17,17 @@
         android:fitsSystemWindows="true">
     </WebView>
 
-</FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/web_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="?attr/colorBackgroundFloating"
+        app:rippleColor="?attr/colorButtonNormal"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="64dp"
+        android:fitsSystemWindows="true"
+        android:src="@drawable/ic_file_download_black_24dp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

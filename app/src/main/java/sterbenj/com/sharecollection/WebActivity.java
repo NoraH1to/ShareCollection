@@ -5,24 +5,23 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.webkit.ValueCallback;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Toast;
 
-import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
-import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
-import com.tencent.smtt.sdk.CookieManager;
-import com.tencent.smtt.sdk.CookieSyncManager;
-import com.tencent.smtt.sdk.ValueCallback;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.util.Map;
 
 public class WebActivity extends BaseActivity {
 
-    Boolean hasFinishLoadWeb;
-
-    com.tencent.smtt.sdk.WebView webView;
+    WebView webView;
 
     String base_address;
 
@@ -33,16 +32,10 @@ public class WebActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        webView = new WebView(getApplicationContext()){
-            @Override
-            protected void onSizeChanged(int i, int i1, int i2, int i3) {
-                super.onSizeChanged(i, i1, i2, i3);
-                Log.d("WebActivityLogd", "onSizeChanged: " + i + " " + i1 + " " + i2 + " " + i3);
-            }
 
+        setContentView(R.layout.activity_web);
 
-        };
-        setContentView(webView);
+        webView = (WebView)findViewById(R.id.web_view);
 
         Intent intent = getIntent();
 
@@ -55,13 +48,12 @@ public class WebActivity extends BaseActivity {
         Log.d("WebActivityLogd", "onCreate: "+ cache.getAbsolutePath().toString());
 
 
-        //初始化webView
 
+        //初始化webView
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setDefaultTextEncodingName("UTF-8");
-        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         // 图片过大时自动适应屏幕
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         // 禁用水平垂直滚动条
@@ -85,11 +77,6 @@ public class WebActivity extends BaseActivity {
         // 不显示webView缩放按钮
         webSettings.setDisplayZoomControls(false);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        // 调整Cookie的使用，否则Cookie的相关操作只能影响系统内核
-        CookieSyncManager.createInstance(this);
-        CookieSyncManager.getInstance().sync();
-        webSettings.setUserAgent("Mozilla/5.0" + " (Linux; Android 7.1.1) " + "Mobile Safari/537.36");
-
 
         webSettings.setMixedContentMode(android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         if(tools.NetWork){
@@ -112,14 +99,14 @@ public class WebActivity extends BaseActivity {
             webView.setWebViewClient(new WebViewClient(){
 
                 @Override
-                public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView webView, String s) {
+                public boolean shouldOverrideUrlLoading(WebView webView, String s) {
                     Log.d("WebActivityLogd", "shouldOverrideUrlLoading:1 " + s);
                     webView.loadUrl(s);
                     return true;
                 }
 
                 @Override
-                public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView webView, com.tencent.smtt.export.external.interfaces.WebResourceRequest webResourceRequest) {
+                public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
                     webResourceRequest.getUrl().toString().indexOf("http");
                     if (webResourceRequest.getUrl().toString().indexOf("http") == 0){
                         Log.d("WebActivityLogd", "shouldOverrideUrlLoading:2 " + webResourceRequest.getUrl().toString());
@@ -131,52 +118,9 @@ public class WebActivity extends BaseActivity {
 
 
                 @Override
-                public void onPageFinished(com.tencent.smtt.sdk.WebView webView, String s) {
-                    Log.d("WebActivityLogd", "onPageFinished: " + s);
-                    super.onPageFinished(webView, s);
-                }
-
-                @Override
-                public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest, Bundle bundle) {
-                    Log.d("WebActivityLogd", "shouldInterceptRequest:1 " + webResourceRequest.getUrl().toString());
-                    if (webResourceRequest.getUrl().toString().indexOf("http") == 0){
-                        return super.shouldInterceptRequest(webView, webResourceRequest);
-                    }
-                    else{
-                        Log.d("WebActivityLogd", "shouldInterceptRequest:1 " + bundle.toString());
-                        return super.shouldInterceptRequest(webView, new WebResourceRequest() {
-                            @Override
-                            public Uri getUrl() {
-                                Uri uri = Uri.EMPTY;
-                                return uri;
-                            }
-
-                            @Override
-                            public boolean isForMainFrame() {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean isRedirect() {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean hasGesture() {
-                                return false;
-                            }
-
-                            @Override
-                            public String getMethod() {
-                                return null;
-                            }
-
-                            @Override
-                            public Map<String, String> getRequestHeaders() {
-                                return null;
-                            }
-                        }, null);
-                    }
+                public void onPageFinished(WebView view, String url) {
+                    Log.d("WebActivityLogd", "onPageFinished: " + url);
+                    super.onPageFinished(view, url);
                 }
 
                 @Override
@@ -235,7 +179,7 @@ public class WebActivity extends BaseActivity {
 
 
                 @Override
-                public void onPageStarted(com.tencent.smtt.sdk.WebView webView, String s, Bitmap bitmap) {
+                public void onPageStarted(WebView webView, String s, Bitmap bitmap) {
                     Log.d("WebActivityLogd", "onPageStarted: " + s);
                     super.onPageStarted(webView, s, bitmap);
                 }
@@ -249,18 +193,28 @@ public class WebActivity extends BaseActivity {
             //webView.loadUrl(intent.getStringExtra("uri"));
             webView.loadUrl("file:///storage/emulated/0/Android/data/sterbenj.com.sharecollection/cache/" + collection_id + ".mhtml");
         }
+
+        //初始化fab
+        FloatingActionButton fab;
+        fab = (FloatingActionButton)findViewById(R.id.web_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(WebActivity.this, "开始缓存", Toast.LENGTH_SHORT).show();
+                webView.saveWebArchive(cache.getAbsolutePath(), false, new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String s) {
+                        Log.d("WebActivityLogd", "onReceiveValue: ");
+                        Toast.makeText(WebActivity.this, "缓存完成", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        webView.saveWebArchive(cache.getAbsolutePath(), false, new ValueCallback<String>() {
-            @Override
-            public void onReceiveValue(String s) {
-                Log.d("WebActivityLogd", "onReceiveValue: ");
-                webView.destroy();
-            }
-        });
         Log.d("WebActivityLogd", "onDestroy: " + cache.getAbsolutePath().toString());
     }
 }

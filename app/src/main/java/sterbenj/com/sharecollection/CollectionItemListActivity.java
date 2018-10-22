@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.content.DialogInterface.OnClickListener;
 import android.util.ArrayMap;
+import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ import java.util.Set;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -88,6 +92,11 @@ public class CollectionItemListActivity extends BaseActivity {
         }
         adapter.notifyDataSetChanged();
 }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,36 +186,53 @@ public class CollectionItemListActivity extends BaseActivity {
             }
 
             @Override
-            public void CopyToShare(String data){
-                //获取剪贴板管理器
-                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                // 创建普通字符型ClipData
-                ClipData mClipData = ClipData.newPlainText("Label", data);
-                // 将ClipData内容放到系统剪贴板里。
-                cm.setPrimaryClip(mClipData);
-
-                Toast.makeText(getApplicationContext(), "内容已复制到剪贴板", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
             public void onCollectionitemLongClick(View v, int position) {
                 if (actionMode == null){
                     actionMode = startSupportActionMode(new MyCallback());
                     positionSet.add(position);
                     actionMode.setTitle(positionSet.size() + " 已选择项目");
+                    adapter.notifyDataSetChanged();
                     adapter.notifyItemChanged(position);
                 }
             }
 
             @Override
-            public void onCollectionItemClick(CollectionItem collectionItem, int position, View v, Context mContext, CheckBox checkBox) {
-
-                Intent intent1 = new Intent(getApplicationContext(), AcceptCollectionitemAndEditActivity.class);
-                intent1.setAction("FROM_IN");
-                intent1.putExtra("CollectionItemID", (long)collectionItem.getId());
-                intent1.putExtra("SpinnerIndex", SpinnerIndex);
-                startActivity(intent1);
-
+            public void OpenMenu(final int position, ImageView view, final String data, final String uri, final CollectionItem collectionItem, CheckBox checkBox) {
+                PopupMenu popupMenu = new PopupMenu(CollectionItemListActivity.this, view, Gravity.LEFT);
+                popupMenu.inflate(R.menu.collectionitemlist_item_menu);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.collectionitemlist_item_menu_copy:
+                                //获取剪贴板管理器
+                                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                // 创建普通字符型ClipData
+                                ClipData mClipData = ClipData.newPlainText("Label", data);
+                                // 将ClipData内容放到系统剪贴板里。
+                                cm.setPrimaryClip(mClipData);
+                                Toast.makeText(getApplicationContext(), "内容已复制到剪贴板", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.collectionitemlist_item_menu_edit:
+                                Intent intent1 = new Intent(getApplicationContext(), AcceptCollectionitemAndEditActivity.class);
+                                intent1.setAction("FROM_IN");
+                                intent1.putExtra("CollectionItemID", (long)collectionItem.getId());
+                                intent1.putExtra("SpinnerIndex", SpinnerIndex);
+                                startActivity(intent1);
+                                Toast.makeText(getApplicationContext(), "edit", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.collectionitemlist_item_menu_offline:
+                                Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+                                intent.putExtra("uri", uri);
+                                intent.putExtra("collectionitem", collectionItemList.get(position));
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "offline", Toast.LENGTH_SHORT).show();
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
             }
         });
 
@@ -234,7 +260,7 @@ public class CollectionItemListActivity extends BaseActivity {
 
         Glide.with(this)
                 .load(category.getIcon())
-                .apply(RequestOptions.bitmapTransform(new BlurTransformation(10, 25)))
+                .apply(RequestOptions.bitmapTransform(new BlurTransformation(0, 0)))
                 .into(imageView);
 
         //根据主题设置样式

@@ -1,133 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/content_view">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/content_view">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        android:layout_weight="10">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_collectionitemlist"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="10">
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_view_collectionitemlist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="@android:color/background_light"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="2dp"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="0dp">
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@android:color/background_light"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="0dp">
 
-                <RelativeLayout
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/collectionlistitem_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/collectionlistitem_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:padding="8dp"
+                    android:text="23333333333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_below="@id/collectionlistitem_image"/>
+
+                <View
+                    android:id="@+id/collectionlistitem_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_below="@+id/collectionlistitem_title" />
+
+                <TextView
+                    android:maxLines="2"
+                    android:textSize="12sp"
+                    android:padding="8dp"
+                    android:id="@+id/collectionlistitem_context"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/collectionlistitem_line"
+                    android:text="2333333333333333333333333333333333333333333333333" />
+
+                <CheckBox
+                    android:id="@+id/collectionlistitem_checkbox"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:checked="false"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"/>
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/collectionlistitem_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop" />
+                <ImageButton
+                    android:id="@+id/card_view_collectionitemlist_more"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.AppCompat.ActionButton.Overflow" />
 
-                    <TextView
-                        android:id="@+id/collectionlistitem_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:padding="8dp"
-                        android:text="23333333333333"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_below="@id/collectionlistitem_image"/>
 
-                    <View
-                        android:id="@+id/collectionlistitem_line"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_below="@+id/collectionlistitem_title" />
+            </RelativeLayout>
 
-                    <TextView
-                        android:maxLines="2"
-                        android:textSize="12sp"
-                        android:padding="8dp"
-                        android:id="@+id/collectionlistitem_context"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/collectionlistitem_line"
-                        android:text="2333333333333333333333333333333333333333333333333" />
 
-                    <CheckBox
-                        android:id="@+id/collectionlistitem_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:checked="false"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"/>
-
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="0.1"
-        android:orientation="vertical"
-        android:id="@+id/right_view">
-
-        <ImageButton
-            android:id="@+id/card_view_collectionitemlist_jump"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginVertical="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_mode_edit_black_24dp"
-            android:background="@drawable/ic_background_tran"/>
-
-        <ImageButton
-            android:id="@+id/card_view_collectionitemlist_copy"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginVertical="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_content_copy_black_24dp"
-            android:background="@drawable/ic_background_tran"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="0.1"
-        android:orientation="vertical"
-        android:id="@+id/left_view">
-
-        <ImageButton
-            android:id="@+id/card_view_collecitonitemlist_offline"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginVertical="8dp"
-            android:layout_marginLeft="8dp"
-            android:src="@drawable/ic_file_download_black_24dp"
-            android:background="@drawable/ic_background_tran"/>
-
-    </LinearLayout>
-
-</androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>
